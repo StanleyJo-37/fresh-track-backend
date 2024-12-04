@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\FoodProduct;
+use App\Models\UserInventory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,16 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('macronutrients', function (Blueprint $table) {
+        Schema::create('food_inventory', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(FoodProduct::class, 'food_product_id');
-            $table->float('calories')->nullable();
-            $table->float('sugars_g')->nullable();
-            $table->float('fibers_g')->nullable();
-            $table->float('starch_g')->nullable();
-            $table->float('proteins_g')->nullable();
-            $table->float('saturated_fats_g')->nullable();
-            $table->float('unsaturated_fats_g')->nullable();
+            $table->foreignIdFor(UserInventory::class, 'user_inventory_id');
+            $table->timestamp('fresh_until');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('macronutrients');
+        Schema::dropIfExists('food_inventory');
     }
 };

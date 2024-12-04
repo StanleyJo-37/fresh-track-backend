@@ -15,13 +15,13 @@ return new class extends Migration
         Schema::create('macrominerals', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(FoodProduct::class, 'food_product_id');
-            $table->float('calcium');
-            $table->float('phosphorus');
-            $table->float('magnesium');
-            $table->float('sodium');
-            $table->float('chloride');
-            $table->float('potassium');
-            $table->float('sulfur');
+            $table->float('calcium')->nullable();
+            $table->float('phosphorus')->nullable();
+            $table->float('magnesium')->nullable();
+            $table->float('sodium')->nullable();
+            $table->float('chloride')->nullable();
+            $table->float('potassium')->nullable();
+            $table->float('sulfur')->nullable();
             $table->timestamps();
         });
     }
