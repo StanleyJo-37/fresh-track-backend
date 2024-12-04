@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,12 +15,30 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->getCredentials();
-        dd($credentials);
 
-        $user = User::where('email', $request->email)->first();
-        if(!$user || !Hash::check($request->password, $user->password));
+        if(!Auth::validate($credentials)){
+            return response()->json([
+                'message' => 'error logging in.'
+            ], 400);
+        }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        // $user = Auth::getProvider()->retrieveByCredentials($credentials);
+        if(!Auth::attempt($credentials)){
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        /** @var \App\Models\User $user **/
+        $user = Auth::user();
+        $token = $user->createToken('freshtrack_token')->plainTextToken;
+        $cookie = cookie(
+            'freshtrack_token',
+            $token,
+            config('session.lifetime')
+        );
+
+        return response()->json([
+            'message' => 'succesfully logged in.',
+        ])->cookie($cookie);
     }
 
     public function register(RegisterRequest $request){
