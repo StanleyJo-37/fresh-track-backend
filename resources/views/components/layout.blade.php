@@ -13,7 +13,7 @@
       <hr>
     </nav>
 
-    <section class="h-full">
+    <section class="min-h-full px-20 mt-10">
       {{ $slot }}
     </section>
 

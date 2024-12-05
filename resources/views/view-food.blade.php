@@ -1,5 +1,10 @@
 <x-layout>
-    <div>
+
+    <a href="/food/add" class="bg-blue-500 text-xl w-fit p-2 rounded-md text-white">
+        Add New Food
+    </a>
+
+    <div class="mt-4">
         @isset ($foods)
             @foreach ($foods as $food)
                 <x-food-item :food="$food"/>
