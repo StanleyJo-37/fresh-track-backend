@@ -1,18 +1,22 @@
-<html>
+<html lang="en">
   <head>
     <title>{{ $title ?? 'Example Website' }}</title>
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
   </head>
   
   <body>
     <nav>
-      <h3>Welcome to my website</h3>
+      <h3 class="text-2xl">Freshtrack Admin</h3>
       <hr>
-      <a href="/food">
-        Go to food
-      </a>
     </nav>
-    {{ $slot }}
+
+    <section class="h-full">
+      {{ $slot }}
+    </section>
+
     <footer>
       <hr />
       © 2023 freshtrack.com
