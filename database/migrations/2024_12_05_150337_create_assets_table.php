@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('food_products', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('local_name', 50);
-            $table->string('scientific_name', 50);
-            $table->integer('serving_size_g');
+            $table->string('path')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('food_products');
+        Schema::dropIfExists('assets');
     }
 };

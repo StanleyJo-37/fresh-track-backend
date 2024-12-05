@@ -12,8 +12,8 @@ Route::get('/user', function (Request $request) {
 Route::get('/login', [UserController::class, 'login']);
 Route::get('/register', [UserController::class, 'register']);
 
-// Route::prefix('/food')->group(function () {
-//     Route::get('/', [AdminFoodController::class, 'createFood']);
-//     Route::post('/', [AdminFoodController::class, 'updateFood']);
-//     Route::delete('/', [AdminFoodController::class, 'removeFood']);
-// });
+Route::prefix('/food')->group(function () {
+    Route::get('/', [AdminFoodController::class, 'createFood']);
+    Route::post('/', [AdminFoodController::class, 'updateFood']);
+    Route::delete('/', [AdminFoodController::class, 'removeFood']);
+});

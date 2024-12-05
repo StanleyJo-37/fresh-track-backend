@@ -7,7 +7,7 @@
       </a>
     </div>
 
-    <h2 class="text-2xl mb-4">Create new food</h2>
+    <h2 class="text-2xl mb-4">Create New Food</h2>
 
     <form class="flex flex-col gap-8">
 
@@ -212,6 +212,10 @@
           <input name="selenium" type="number" id="selenium" required class="border-2" />
         </div>
       </div>
+
+      <button class="bg-green-500 text-xl w-fit p-2 rounded-md text-white">
+        Submit
+      </button>
 
     </form>
   </div>

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(FoodProduct::class, 'food_product_id');
             $table->foreignIdFor(UserInventory::class, 'user_inventory_id');
             $table->timestamp('fresh_until');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

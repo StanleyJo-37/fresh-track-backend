@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class FoodInventory extends Pivot
@@ -13,4 +14,9 @@ class FoodInventory extends Pivot
     ];
 
     protected $table = 'food_inventory';
+
+    public function food(): BelongsTo
+    {
+        return $this->belongsTo(FoodProduct::class, 'food_product_id');
+    }
 }

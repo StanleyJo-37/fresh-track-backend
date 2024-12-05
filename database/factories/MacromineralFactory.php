@@ -17,7 +17,13 @@ class MacromineralFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'calcium' => rand(0, 150),
+            'phosphorus' => rand(0, 150),
+            'magnesium' => rand(0, 150),
+            'sodium' => rand(0, 150),
+            'chloride' => rand(0, 150),
+            'potassium' => rand(0, 150),
+            'sulfur' => rand(0, 150),
         ];
     }
 }

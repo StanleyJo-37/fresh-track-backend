@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Asset;
 
 return new class extends Migration
 {
@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_inventories', function (Blueprint $table) {
+        Schema::create('asset_relations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'user_id');
-            $table->timestamp('created_at')->useCurrent()->nullable();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
+            $table->foreignIdFor(Asset::class, 'asset_id');
+            $table->string('model_type')->nullable();
+            $table->string('model_id')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_inventories');
+        Schema::dropIfExists('asset_relations');
     }
 };

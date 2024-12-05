@@ -35,7 +35,8 @@ return new class extends Migration
             $table->float('iodine')->nullable();
             $table->float('fluoride')->nullable();
             $table->float('selenium')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

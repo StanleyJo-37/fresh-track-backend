@@ -22,7 +22,8 @@ return new class extends Migration
             $table->float('chloride')->nullable();
             $table->float('potassium')->nullable();
             $table->float('sulfur')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

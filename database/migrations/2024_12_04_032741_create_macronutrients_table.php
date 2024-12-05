@@ -22,7 +22,8 @@ return new class extends Migration
             $table->float('proteins_g')->nullable();
             $table->float('saturated_fats_g')->nullable();
             $table->float('unsaturated_fats_g')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

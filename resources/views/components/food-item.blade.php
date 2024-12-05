@@ -6,13 +6,13 @@
 
     <div class="flex-1">
         <div>
-            local: {{$food['local_name']}}
+            Local : {{$food['local_name']}}
         </div>
         <div>
-            scientific: {{$food['scientific_name']}}
+            Scientific : {{$food['scientific_name']}}
         </div>
         <div>
-            serve size(grams): {{$food['serving_size_g']}}
+            Serve Size (grams) : {{$food['serving_size_g']}}
         </div>
     </div>
     
