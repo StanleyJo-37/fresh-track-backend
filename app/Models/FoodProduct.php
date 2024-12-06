@@ -29,7 +29,7 @@ class FoodProduct extends Model
         return $this->morphOne(AssetRelation::class, 'asset_relation');
     }
 
-    public function macronutrients():HasOne{
+    public function macronutrient():HasOne{
         return $this->hasOne(Macronutrient::class, 'food_product_id');
     }
 

@@ -4,44 +4,93 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FoodProduct;
+use Exception;
 use Illuminate\Http\Request;
 
 class AdminFoodController extends Controller
 {
-    public function all(Request $request){
-        return FoodProduct::all();
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'local_name' => 'required',
+                'scientific_name' => 'required',
+                'serving_size_g' => 'required'
+            ]);
+
+            $food = FoodProduct::create($request->only([
+                'local_name',
+                'scientific_name',
+                'serving_size_g'
+            ]));
+            $food->macronutrient()->create($request->macronutrient);
+            $food->macromineral()->create($request->macromineral);
+            $food->micronutrient()->create($request->micronutrient);
+        } catch (Exception $e) {
+            dd($e);
+        }
+
+        return back()->with('success', 'succesfully added ' . $food->local_name);
     }
 
-    public function createFood(Request $request){
-        $request->validate([
-            'local_name' => 'required',
-            'scientific_name' => 'required',
-            'serving_size_g' => 'required'
-        ]);
+    public function update(Request $request, $id)
+    {
+        try {
+            $food = FoodProduct::findOrFail($id);
+            $food->update([
+                'local_name' => $request->local_name,
+                'scientific_name' => $request->scientific_name,
+                'serving_size_g' => $request->serving_size_g
+            ]);
+            $food->macronutrient()->update($request->macronutrient);
+            $food->macromineral()->update($request->macromineral);
+            $food->micronutrient()->update($request->micronutrient);
 
-        FoodProduct::create($request->all());
+        } catch (Exception $e) {
+            dd($e);
+        }
+
+        return back()->with('success', $food->local_name . ' successfully updated.');
     }
 
-    public function updateFood(Request $request){
-
+    public function delete(Request $request, $id)
+    {
+        try{
+            $food = FoodProduct::findOrFail($id);
+            $food->macronutrient()->delete();
+            $food->macromineral()->delete();
+            $food->micronutrient()->delete();
+            $food->delete();
+            
+        } catch(Exception $e){
+            dd($e);    
+        }
+        
+        return redirect(route('foods.list'))->with('success', $food->local_name . 'succesfully deleted.');
     }
 
-    public function removeFood(Request $request){
 
-    }
 
     // Views
-    public function viewFood(){
+    public function index()
+    {
         $foods = FoodProduct::all();
-        return view('/view-food', ['foods' => $foods]);
+        return view('/food/index', ['foods' => $foods]);
     }
 
-    public function addFood(){
-
-        return view('/create-food');
+    public function create()
+    {
+        return view('/food/create');
     }
 
-    public function editFood(){
-        return view('/update-food');
+    public function show(Request $request, $id)
+    {
+        $food = FoodProduct::where('id', $id)->with([
+            'macronutrient',
+            'macromineral',
+            'micronutrient'
+        ])->first();
+        
+        return view("/food/edit", ['food' => $food]);
     }
 }

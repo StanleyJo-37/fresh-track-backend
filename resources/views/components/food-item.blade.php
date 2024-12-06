@@ -16,12 +16,18 @@
         </div>
     </div>
     
-    <div>
-        <button class="bg-green-600 text-white px-2 py-1 rounded-sm">
+    <div class="flex flex-col gap-2">
+        <a href="/food/{{ $food['id'] }}" class="bg-green-600 text-white px-2 py-1 rounded-sm">
             Edit
-        </button>
-        <button class="bg-red-600 text-white px-2 py-1 rounded-sm">
-            Delete
-        </button>
+        </a>
+
+        <form action="/food/{{ $food['id'] }}" method="POST">
+            @method("DELETE")
+            @csrf
+            <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded-sm">
+                Hapus
+            </button>
+        </form>
+
     </div>
 </div>
