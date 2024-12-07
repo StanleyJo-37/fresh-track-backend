@@ -8,6 +8,7 @@ use GeminiAPI\Enums\MimeType;
 use Illuminate\Http\Request;
 use GeminiAPI\Client as GeminiClient;
 use GeminiAPI\Resources\Parts\TextPart;
+use Illuminate\Support\Facades\Auth;
 
 class WebAIController extends Controller
 {
@@ -19,12 +20,13 @@ class WebAIController extends Controller
     
     public function infer(Request $request){
         try {
+            Auth::user();
             $response = $this->gemini->geminiProFlash1_5()->generateContent(
                 new TextPart('Tell me what this'),
                 new ImagePart(
                     mimeType::IMAGE_JPEG,
                     base64_encode(file_get_contents($request->image_upload))
-                )
+                ),
             );
     
             return response()->json([
