@@ -18,18 +18,23 @@ class WebAIController extends Controller
     }
     
     public function infer(Request $request){
-
-        $response = $this->gemini->geminiProFlash1_5()->generateContent(
-            new TextPart('Tell me what this'),
-            new ImagePart(
-                mimeType::IMAGE_JPEG,
-                base64_encode(file_get_contents($request->image_upload))
-            )
-        );
-
-        return response()->json([
-            'message' => $response
-        ]);
+        try {
+            $response = $this->gemini->geminiProFlash1_5()->generateContent(
+                new TextPart('Tell me what this'),
+                new ImagePart(
+                    mimeType::IMAGE_JPEG,
+                    base64_encode(file_get_contents($request->image_upload))
+                )
+            );
+    
+            return response()->json([
+                'message' => $response
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
 }
