@@ -34,7 +34,7 @@ class WebAIController extends Controller
             - 'food_name'  (name of the food)\n
             - 'freshness'     (0-100)\n
             - 'fresh_till'        (date in YYYY-MM-DD format)
-            without any styling like markdowns, just in raw JSON format";
+            without any styling like markdowns, just in raw JSON format. The result must only be one.";
 
             $generation_config = (new GenerationConfig())
                 ->withTemperature(0.6)
@@ -61,10 +61,8 @@ class WebAIController extends Controller
             $filtered_text = str_replace('`', '', $filtered_text);
 
             $json_result = json_decode($filtered_text, true);
-
-            return response()->json([
-                'message' => $json_result
-            ]);
+        
+            return response()->json($json_result);
         } catch (\Exception $e) {
             dd($e);
             return response()->json([
