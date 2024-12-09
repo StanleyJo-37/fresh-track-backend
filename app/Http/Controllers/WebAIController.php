@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\FoodProduct;
+use Carbon\Carbon;
 use GeminiAPI\GenerationConfig;
 use GeminiAPI\Resources\Parts\ImagePart;
 use GeminiAPI\Enums\MimeType;
@@ -26,26 +28,41 @@ class WebAIController extends Controller
         try {
             
             $request->validate([
-                'image_upload' => 'required'
+                'image_upload' => 'required',
+                'date_upload'  => 'required' 
             ]);
 
+            $date_upload = Carbon::parse($request->date_upload);
+            $food_list = FoodProduct::select([
+                'id',
+                'local_name'
+            ])->get()->toArray();
+            $encoded_list = json_encode($food_list);
+
             $system_inst = "Precise JSON data format with these specified keys:\n
+            - 'id'           (food id)
+            - 'local_name'   (name of the food)\n
             - 'food_type'    (either 'vegetable' / 'fruit')\n
-            - 'food_name'  (name of the food)\n
-            - 'freshness'     (0-100)\n
-            - 'fresh_till'        (date in YYYY-MM-DD format)
-            without any styling like markdowns, just in raw JSON format. The result must only be one.";
+            - 'freshness'    (0-100)\n
+            - 'fresh_till'   (freshness from $date_upload in YYYY-MM-DD format)
+            - 'defects'      (explain if there are any noticable defects and store it in an array of string)
+            - 'condition'    (describes the condition of the food)
+            The result must only be one
+
+            The food must be from the provided list: $encoded_list
+            If the food isn't present in the list, then make all the values null";
 
             $generation_config = (new GenerationConfig())
                 ->withTemperature(0.6)
                 ->withTopP(0.95)
                 ->withTopK(40)
-                ->withMaxOutputTokens(1000)
-                ->jsonSerialize();
+                ->withMaxOutputTokens(1000);
+                // ->jsonSerialize();
 
             $response = $this->gemini
                 ->withV1BetaVersion()
                 ->generativeModel(ModelName::GEMINI_1_5_FLASH)
+                ->withGenerationConfig($generation_config)
                 ->withSystemInstruction($system_inst)
                 ->generateContent(
                     new TextPart($system_inst),
