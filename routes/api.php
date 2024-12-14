@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminFoodController;
+use App\Http\Controllers\AzureController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebAIController;
 use Illuminate\Http\Request;
@@ -10,8 +11,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/login', [UserController::class, 'login']);
-Route::get('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
 
 Route::prefix('/food')->group(function () {
     Route::get('/', [AdminFoodController::class, 'createFood']);
@@ -21,4 +22,8 @@ Route::prefix('/food')->group(function () {
 
 Route::prefix('/ai')->group(function () {
     Route::post('/', [WebAIController::class, 'infer']);
+});
+
+Route::prefix('/image')->group(function() {
+    Route::post('/', [AzureController::class, 'uploadImage']);
 });
