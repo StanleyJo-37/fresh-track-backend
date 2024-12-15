@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
             // return response()->json($request->all());

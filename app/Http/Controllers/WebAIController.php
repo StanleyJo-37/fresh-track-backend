@@ -26,7 +26,6 @@ class WebAIController extends Controller
     public function infer(Request $request)
     {
         try {
-            
             $request->validate([
                 'image_upload' => 'required',
                 'date_upload'  => 'required' 
