@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminFoodController;
 use App\Http\Controllers\AzureController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebAIController;
 use Illuminate\Http\Request;
@@ -18,6 +19,13 @@ Route::prefix('/food')->group(function () {
     Route::get('/', [AdminFoodController::class, 'createFood']);
     Route::post('/', [AdminFoodController::class, 'updateFood']);
     Route::delete('/', [AdminFoodController::class, 'removeFood']);
+});
+
+Route::prefix('/inventory')->group(function () {
+    Route::get('/', [InventoryController::class, 'getAllItem']);
+    Route::post('/', [InventoryController::class, 'addItem']);
+    Route::put('/', [InventoryController::class, 'editItem']);
+    Route::delete('/{food_inventory_id}', [InventoryController::class, 'deleteItem']);
 });
 
 Route::prefix('/ai')->group(function () {
