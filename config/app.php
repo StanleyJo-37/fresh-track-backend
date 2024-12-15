@@ -1,5 +1,7 @@
 <?php
 
+use AzureOss\LaravelAzureStorageBlob\AzureStorageBlobServiceProvider;
+
 return [
 
     /*

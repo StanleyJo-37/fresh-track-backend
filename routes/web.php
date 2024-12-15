@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Admin\AdminAuthenticateController;
 use App\Http\Controllers\Admin\AdminFoodController;
+use App\Http\Controllers\AzureController;
 use App\Http\Controllers\UserController;
 use App\Models\FoodProduct;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +25,16 @@ Route::prefix('/login')->group(function () {
 Route::prefix('/register')->group(function () {
     Route::get('/', [AdminAuthenticateController::class, 'registerView']);
     Route::post('/action', [AdminAuthenticateController::class, 'register']);
+});
+
+Route::get('/token', function (Request $request) {
+    $token = $request->session()->token();
+
+    $token = csrf_token();
+    $response = new Response('csrf_token');
+    $response->withCookie(cookie('XSRF-TOKEN', $token, 60));
+
+    return $response;
 });
 
 // Route::prefix('/food')->group(function () {

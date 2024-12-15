@@ -44,7 +44,7 @@ class AdminAuthenticateController extends Controller
 
     public function register() {
         try{
-
+            return response()->json("MASUK");
         } catch(Exception $err){
 
         }
