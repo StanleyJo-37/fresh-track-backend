@@ -23,11 +23,13 @@ Route::prefix('/food')->group(function () {
     Route::delete('/', [AdminFoodController::class, 'removeFood']);
 });
 
-Route::prefix('/inventory')->group(function () {
-    Route::get('/', [InventoryController::class, 'getAllItem']);
-    Route::post('/', [InventoryController::class, 'addItem']);
-    Route::put('/', [InventoryController::class, 'editItem']);
-    Route::delete('/{food_inventory_id}', [InventoryController::class, 'deleteItem']);
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::prefix('/inventory')->group(function () {
+        Route::get('/', [InventoryController::class, 'getAllItem']);
+        Route::post('/', [InventoryController::class, 'addItem']);
+        Route::put('/', [InventoryController::class, 'editItem']);
+        Route::delete('/{food_inventory_id}', [InventoryController::class, 'deleteItem']);
+    });
 });
 
 Route::prefix('/ai')->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +12,10 @@ class InventoryController extends Controller
 {
     //
 
-    public function getAllItem(Request $request) {
+    public function getAllItem() {
         try {
-            // $user = Auth::user();
-            // dd($request->user());
-            $userId = 1;
+            $user = Auth::user();
+            $userId = $user->id;
 
             $items = DB::table('food_inventory', 'fi')
                     ->select([
