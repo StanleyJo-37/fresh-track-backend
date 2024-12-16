@@ -11,17 +11,18 @@ class InventoryController extends Controller
 {
     //
 
-    public function getAllItem() {
+    public function getAllItem(Request $request) {
         try {
-            $user = Auth::user();
-            $userId = $user->id;
+            // $user = Auth::user();
+            // dd($request->user());
+            $userId = 1;
 
             $items = DB::table('food_inventory', 'fi')
                     ->select([
                         'fi.id',
                         'fp.local_name',
                         'fp.scientific_name',
-                        'fp.serving_size',
+                        'fp.serving_size_g',
                         'fi.fresh_until',
                         'fi.quantity',
                     ])
