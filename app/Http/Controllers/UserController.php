@@ -16,16 +16,8 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            // return response()->json($request->all());
             $credentials = $request->all();
 
-            // if(!Auth::validate($credentials)){
-            //     return response()->json([
-            //         'message' => 'error logging in.'
-            //     ], 400);
-            // }
-
-            // $user = Auth::getProvider()->retrieveByCredentials($credentials);
             if(!Auth::attempt($credentials)){
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
@@ -41,6 +33,7 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => 'succesfully logged in.',
+                'token' => $token,
             ])->cookie($cookie);
         } catch (Exception $e) {
             return response()->json([
