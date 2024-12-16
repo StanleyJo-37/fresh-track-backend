@@ -22,7 +22,6 @@ class InventoryController extends Controller
                         'fi.id',
                         'fp.local_name',
                         'fp.scientific_name',
-                        'fp.serving_size_g',
                         'fi.fresh_until',
                         'fi.quantity',
                     ])
@@ -31,6 +30,16 @@ class InventoryController extends Controller
                         ['fi.user_inventory_id', $userId],
                     ])
                     ->get();
+
+            if (isset($items)) {
+                $items = json_decode($items, true);
+
+                $items = array_map(function ($item) {
+                    return array_merge($item, [
+                        'fresh_until' => Carbon::parse($item['fresh_until'])->format('l, d-F-Y, H:i:s'),
+                    ]);
+                }, $items);
+            }
 
             return response()->json($items);
         } catch (Exception $e) {
