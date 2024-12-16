@@ -37,8 +37,11 @@ class InventoryController extends Controller
                 $items = array_map(function ($item) {
                     return array_merge($item, [
                         'fresh_until' => Carbon::parse($item['fresh_until'])->format('l, d-F-Y H:i:s'),
+                        'quantity' => (float) $item['quantity'],
                     ]);
                 }, $items);
+                
+                
             }
 
             return response()->json($items);
