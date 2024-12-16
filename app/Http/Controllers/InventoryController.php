@@ -36,7 +36,7 @@ class InventoryController extends Controller
 
                 $items = array_map(function ($item) {
                     return array_merge($item, [
-                        'fresh_until' => Carbon::parse($item['fresh_until'])->format('l, d-F-Y, H:i:s'),
+                        'fresh_until' => Carbon::parse($item['fresh_until'])->format('l, d-F-Y H:i:s'),
                     ]);
                 }, $items);
             }
@@ -56,11 +56,14 @@ class InventoryController extends Controller
             $user = Auth::user();
             $userId = $user->id;
 
-            $data = array_map(function($item) use($userId) {
-                return [
-                    ...$item,
-                    'user_inventory_id' => $userId,
-                ];
+            $currTime = Carbon::now();
+
+            $data = array_map(function($item) use($userId, $currTime) {
+                return array_merge($item, [
+                        'bought_at' => $currTime,
+                        'user_inventory_id' => $userId,
+                    ]
+                );
             }, $request->food_items);
 
             $item = DB::table('food_inventory')->insert($data);
@@ -72,15 +75,18 @@ class InventoryController extends Controller
         }
     }
 
-    public function deleteItem(int $food_inventory_id) {
+    public function deleteItem(Request $request) {
         try {
+            $request->validate([
+                'food_inventory_id' => 'required|integer',
+            ]);
             DB::beginTransaction();
             $user = Auth::user();
             $userId = $user->id;
 
-            $item = DB::raw("
+            $item = DB::delete("
                 DELETE FROM food_inventory
-                WHERE id = $food_inventory_id
+                WHERE id = $request->food_inventory_id
                 AND user_inventory_id = $userId
             ");
 
@@ -95,17 +101,18 @@ class InventoryController extends Controller
         try {
             DB::beginTransaction();
             $request->validate([
-                'food_item' => 'required|array',
+                'food_inventory_id' => 'required|integer',
+                'new_food_info' => 'required|array',
             ]);
             $user = Auth::user();
             $userId = $user->id;
 
             $item = DB::table('food_inventory')
                     ->where([
-                        ['id', $request->food_item["food_inventory_id"]],
+                        ['id', $request->food_inventory_id],
                         ['user_inventory_id', $userId],
                     ])
-                    ->update($request->food_items);
+                    ->update($request->new_food_info);
 
             DB::commit();
             return response()->json($item);
