@@ -28,14 +28,15 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::get('/', [InventoryController::class, 'getAllItem']);
         Route::post('/', [InventoryController::class, 'addItem']);
         Route::put('/', [InventoryController::class, 'editItem']);
-        Route::delete('/{food_inventory_id}', [InventoryController::class, 'deleteItem']);
+        Route::delete('/', [InventoryController::class, 'deleteItem']);
+    });
+
+    Route::prefix('/ai')->group(function () {
+        Route::post('/', [WebAIController::class, 'infer']);
+    });
+    
+    Route::prefix('/image')->group(function() {
+        Route::post('/', [AzureController::class, 'uploadImage']);
     });
 });
 
-Route::prefix('/ai')->group(function () {
-    Route::post('/', [WebAIController::class, 'infer']);
-});
-
-Route::prefix('/image')->group(function() {
-    Route::post('/', [AzureController::class, 'uploadImage']);
-});
