@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,9 +36,20 @@ class InventoryController extends Controller
                 $items = json_decode($items, true);
 
                 $items = array_map(function ($item) {
+                    $diff = date_diff(new DateTime($item['fresh_until']), Carbon::now())->days;
+
+                    $status = $diff < 0 
+                                ? 0
+                                : ($diff === 0
+                                    ? 1
+                                    : ($diff >= 3
+                                        ? 2
+                                        : 3));
+
                     return array_merge($item, [
                         'fresh_until' => Carbon::parse($item['fresh_until'])->format('l, d-F-Y H:i:s'),
                         'quantity' => (float) $item['quantity'],
+                        'status' => $status,
                     ]);
                 }, $items);
                 
