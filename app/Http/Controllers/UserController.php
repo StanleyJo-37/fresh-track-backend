@@ -16,7 +16,7 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $credentials = $request->all();
+            $credentials = $request->only(['username', 'password']);
 
             if(!Auth::attempt($credentials)){
                 return response()->json(['message' => 'Invalid credentials'], 401);
@@ -30,7 +30,8 @@ class UserController extends Controller
                 $token,
                 config('session.lifetime')
             );
-
+            
+            Auth::login($user, $request->remember);
             return response()->json([
                 'message' => 'succesfully logged in.',
                 'token' => $token,
