@@ -43,13 +43,15 @@ class WebAIController extends Controller
             - 'local_name'   (name of the food)\n
             - 'food_type'    (either 'vegetable' / 'fruit')\n
             - 'freshness'    (0-100)\n
-            - 'fresh_till'   (freshness from $date_upload in YYYY-MM-DD format)
-            - 'defects'      (explain if there are any noticable defects and store it in an array of string)
-            - 'condition'    (describes the condition of the food)
-            The result must only be one
+            - 'fresh_till'   (freshness from $date_upload in YYYY-MM-DD format)\n
+            - 'defects'      (explain if there are any noticable defects and store it in an array of string)\n
+            - 'condition'    (describes the condition of the food)\n
+            There could be more than one type of fruits or vegetables in the image.\n
+            If there are more than one food items, then provide the data in an array of JSON objects.\n
+            If there are more than one food items for each type, make it only one object in the array with the conditions being the collective conditions of the group.\n
 
-            The food must be from the provided list: $encoded_list
-            If the food isn't present in the list, then make all the values null";
+            The food must be from the provided list: $encoded_list\n
+            If the food isn't present in the list, then make all the values null.";
 
             $generation_config = (new GenerationConfig())
                 ->withTemperature(0.6)
