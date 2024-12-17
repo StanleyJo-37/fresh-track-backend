@@ -24,7 +24,7 @@ Route::prefix('/food')->group(function () {
     Route::delete('/', [AdminFoodController::class, 'removeFood']);
 });
 
-Route::middleware(['set-bearer', 'auth:sanctum'])->group(function () {
+Route::middleware(['set-bearer', 'json-decrypt'])->group(function () {
     Route::prefix('/inventory')->group(function () {
         Route::get('/', [InventoryController::class, 'getAllItem']);
         Route::post('/', [InventoryController::class, 'addItem']);

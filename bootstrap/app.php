@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\JsonDecrypt;
 use App\Http\Middleware\SetBearerToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,7 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'set-bearer' => SetBearerToken::class
+            'set-bearer' => SetBearerToken::class,
+            'json-decrypt' => JsonDecrypt::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

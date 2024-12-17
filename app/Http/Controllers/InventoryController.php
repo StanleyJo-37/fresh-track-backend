@@ -15,7 +15,7 @@ class InventoryController extends Controller
 
     public function getAllItem() {
         try {
-            $user = Auth::user();
+            $user = Auth::guard('sanctum')->user();
             $userId = $user->id;
 
             $items = DB::table('food_inventory', 'fi')
@@ -65,10 +65,11 @@ class InventoryController extends Controller
     public function addItem(Request $request) {
         try {
             DB::beginTransaction();
+
             $request->validate([
                 'food_items' => 'required|array',
             ]);
-            $user = Auth::user();
+            $user = Auth::guard('sanctum')->user();
             $userId = $user->id;
 
             $currTime = Carbon::now();
@@ -80,6 +81,7 @@ class InventoryController extends Controller
                     ]
                 );
             }, $request->food_items);
+
 
             $item = DB::table('food_inventory')->insert($data);
 
@@ -96,7 +98,7 @@ class InventoryController extends Controller
                 'food_inventory_id' => 'required|integer',
             ]);
             DB::beginTransaction();
-            $user = Auth::user();
+            $user = Auth::guard('sanctum')->user();
             $userId = $user->id;
 
             $item = DB::delete("
@@ -119,7 +121,7 @@ class InventoryController extends Controller
                 'food_inventory_id' => 'required|integer',
                 'new_food_info' => 'required|array',
             ]);
-            $user = Auth::user();
+            $user = Auth::guard('sanctum')->user();
             $userId = $user->id;
 
             $item = DB::table('food_inventory')
