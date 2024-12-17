@@ -5,6 +5,7 @@ use App\Http\Controllers\AzureController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebAIController;
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\JsonDecrypt;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ Route::prefix('/food')->group(function () {
     Route::delete('/', [AdminFoodController::class, 'removeFood']);
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function() {
+Route::middleware(['set-bearer', 'auth:sanctum'])->group(function () {
     Route::prefix('/inventory')->group(function () {
         Route::get('/', [InventoryController::class, 'getAllItem']);
         Route::post('/', [InventoryController::class, 'addItem']);
@@ -34,9 +35,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('/ai')->group(function () {
         Route::post('/', [WebAIController::class, 'infer']);
     });
-    
-    Route::prefix('/image')->group(function() {
+
+    Route::prefix('/image')->group(function () {
         Route::post('/', [AzureController::class, 'uploadImage']);
     });
 });
-
