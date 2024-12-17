@@ -18,9 +18,9 @@ class JsonDecrypt
         if ($request->isJson()) {
             // Decode the raw JSON request body
             $decodedData = json_decode($request->getContent(), true); // true converts to an associative array
-
             // Merge the decoded data into the request, so it can be accessed like normal request data
-            $request->merge($decodedData);
+            if(isset($decodedData)) $request->merge($decodedData);
+
         }
 
         return $next($request);
