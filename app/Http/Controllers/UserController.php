@@ -24,6 +24,9 @@ class UserController extends Controller
 
             /** @var \App\Models\User $user **/
             $user = Auth::user();
+
+            $user->tokens()->where('name', 'freshtrack_token')->delete();
+
             $token = $user->createToken('freshtrack_token')->plainTextToken;
             $cookie = cookie(
                 'freshtrack_token',
