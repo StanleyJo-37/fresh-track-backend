@@ -9,6 +9,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -55,5 +56,18 @@ class UserController extends Controller
         return response()->json([
             'message' => 'succesfully registered.'
         ]);
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+
+        $cookie = Cookie::forget('freshtrack_token');
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'logged out succesfully'
+        ])->withCookie($cookie);
     }
 }

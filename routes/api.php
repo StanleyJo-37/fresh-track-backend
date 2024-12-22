@@ -17,6 +17,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/login', [UserController::class, 'login'])->middleware([JsonDecrypt::class]);
 Route::post('/register', [UserController::class, 'register']);
+Route::get('/logout', [UserController::class, 'logout']);
 
 Route::prefix('/food')->group(function () {
     Route::get('/', [AdminFoodController::class, 'createFood']);
